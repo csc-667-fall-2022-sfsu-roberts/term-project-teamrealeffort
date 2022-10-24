@@ -12,6 +12,7 @@
     "postinstall": "npx sequelize db:migrate"
   },
   "dependencies": {
+    "bootstrap": "^5.2.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",

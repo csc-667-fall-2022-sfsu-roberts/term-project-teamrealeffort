@@ -1,0 +1,14 @@
+.background {
+    height: 100%;
+    background: url('../images/uno_background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+
+.login-form {
+    width: 500px;
+    height: 500px;
+    background: white;
+}

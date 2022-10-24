@@ -3,5 +3,8 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+    link(rel="stylesheet", href="/css/bootstrap.min.css")
+    script(src="/js/bootstrap.min.js")
+    block extra_script
+  body(class="p-0")
     block content
