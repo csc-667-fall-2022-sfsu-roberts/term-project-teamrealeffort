@@ -1,0 +1,34 @@
+extends layout
+
+block extra_script
+  link(rel="stylesheet", href="/stylesheets/register.css")
+block content
+  div(class="register-form rounded-4 d-flex flex-column justify-content-center align-items-center")
+    h1(class="mb-5")
+      | Register
+    form()
+      div(class="mb-3") 
+        label(for="exampleInputEmail1" class="form-label")
+          | Username
+        input(type="text" required class="form-control")
+      div(class="mb-3") 
+        label(for="exampleInputEmail1" class="form-label")
+          | Email address
+        input(type="email" required class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp")
+        div(id="emailHelp" class="form-text")
+          | We'll never share your email with anyone else.
+      div(class="mb-3") 
+          div()
+            label(for="inputPassword6" class="col-form-label")
+              | Password
+          div()
+            input(type="password" required pattern="^.{8}$" title="Must be 8-20 characters long" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline")
+          div()
+            span(id="passwordHelpInline" class="form-text")
+              | Must be 8-20 characters long.
+      div(class="mb-3 form-check") 
+        input(type="checkbox" class="form-check-input" id="exampleCheck1")
+        label(class="form-check-label" for="exampleCheck1")
+          | Remember Me
+      button(type="submit" class="btn btn-primary")
+        | submit
