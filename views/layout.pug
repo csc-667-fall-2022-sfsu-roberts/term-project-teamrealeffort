@@ -3,5 +3,10 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    link(rel="stylesheet", href="/css/bootstrap.min.css")
+    script(src="/js/bootstrap.min.js")
+    block extra_script
+  body(class="p-0")
+   div(class="background")
+      div(class="d-flex flex-column min-vh-100 justify-content-center align-items-center")
+        block content
