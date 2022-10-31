@@ -1,27 +1,30 @@
 'use strict';
 module.exports = {
+ 
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable(
-      'test_table',
+      'Card',
       {
-        id: {
+         CardId: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          autoIncrement: true
-        },
-        createdAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.literal('NOW()'),
+          autoIncrement: true,  
           allowNull: false
-        },
-        testString: {
-          type:Sequelize.STRING,
+        }, 
+        Color: {
+          type: Sequelize.STRING(100),  
+          allowNull: false
+        }, 
+        Value: { 
+          type: Sequelize.STRING(100), 
           allowNull: false
         }
+
       }
     );
-  },
+  }, 
+  
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('test_table');
+    return queryInterface.dropTable('Card');
   }
 };
