@@ -1,8 +1,12 @@
 .server_list {
-    border: 1px black;
     display: block;
 }
 
 .modal-dialog {
     max-width: none;
+}
+
+.modal {
+    --bs-modal-bg: none;
+    
 }
