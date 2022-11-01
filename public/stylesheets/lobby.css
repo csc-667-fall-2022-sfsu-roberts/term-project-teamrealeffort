@@ -6,7 +6,16 @@
     max-width: none;
 }
 
-.modal {
-    --bs-modal-bg: none;
-    
+.modal-content:hover {
+    border: 4px rgb(70, 70, 238) solid;
+    cursor: pointer;
+}
+
+.modal-content {
+    width: 25%;
+}
+
+
+.title {
+    color: white;
 }
