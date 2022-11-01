@@ -1,14 +1,8 @@
-.background {
-    height: 100%;
-    background: url('../images/uno_background.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    
+.server_list {
+    border: 1px black;
+    display: block;
 }
 
-.lobby-form {
-    width: 500px;
-    height: 500px;
-    background: white;
+.modal-dialog {
+    max-width: none;
 }
