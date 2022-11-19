@@ -6,4 +6,30 @@ block content
   div(class="lobby-form rounded-4 d-flex flex-column justify-content-center align-items-center")
     if username 
     H2 WELCOME #{username}
+  div(class="modal-backdrop fade show")
+  div(class="modal fade show server_list" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true")
+    div(class="modal-dialog ms-3 me-3")
+      h1(class="text-center title")="Server List"
+      div(class="container")
+      - var n = 0;
+      - var counter = 0
+        while n < 4
+          - n++
+          - counter++
+          div(class="row mb-5")
+              div(class="modal-content col-3 text-center me-auto ms-auto")
+                div()
+                  p()="Server" + counter
+              - counter++
+              div(class="modal-content col-3 text-center me-auto ms-auto")
+                div()
+                  p()="Server" + counter
+
+                  
+            
+
+          
+
+    
+    
         
