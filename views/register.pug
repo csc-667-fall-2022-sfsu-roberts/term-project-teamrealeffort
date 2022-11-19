@@ -2,17 +2,15 @@ extends layout
 
 block extra_script
   link(rel="stylesheet", href="/stylesheets/register.css")
-  script(src="/javascripts/register.js") 
 block content
-  div(class="register-form rounded-4 d-flex flex-column justify-content-center align-items-center")
+  div(class="login-form rounded-4 d-flex flex-column justify-content-center align-items-center")
     h1(class="mb-5")
-      | Register
-    form(onsubmit="return register_validation(event)")
-
+      |Login
+    form(action = '/register' method = 'post')
       div(class="mb-3") 
-        label(for="exampleInputEmail1" class="form-label")
+        label(for="exampleInputEmail1" required class="form-label")
           | Username
-        input(type="text" required id="username" name="username" class="form-control")
+        input(type="email" class="form-control" aria-describedby="emailHelp" id= "username" name= "username")
       div(class="mb-3") 
         label(for="exampleInputEmail1" class="form-label")
           | Email address
@@ -34,9 +32,6 @@ block content
               | Confirm Password
           div()
             input(type="password" required pattern="^.{8,20}$" title="Must be 8-20 characters long" id="confirm_password" class="form-control" aria-describedby="passwordHelpInline")
-      div(class="mb-3 form-check") 
-        input(type="checkbox" class="form-check-input" id="exampleCheck1")
-        label(class="form-check-label" for="exampleCheck1")
-          | Remember Me
       button(type="submit" class="btn btn-primary")
         | submit
+      

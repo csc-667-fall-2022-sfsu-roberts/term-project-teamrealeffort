@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var sessionInstance = require('./config/session'); 
 
 if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
@@ -31,6 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use(sessionInstance); 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
