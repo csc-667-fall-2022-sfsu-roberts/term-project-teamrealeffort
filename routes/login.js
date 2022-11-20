@@ -21,13 +21,7 @@ router.post('/', (req, res, next) =>  {
   console.log({username, password}); 
 
   res.redirect("/lobby"); 
-    
   } 
-  
-
-  
-
- 
 });
 
 module.exports = router;
