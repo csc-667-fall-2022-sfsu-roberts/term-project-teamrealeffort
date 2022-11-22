@@ -10,15 +10,15 @@ router.get('/', (req, res, next) =>  {
 });
 
 router.post('/', (req, res, next) =>  {
-  const {username, password} = req.body; 
+  const {email, password} = req.body; 
 
-  if (verifyLogin.check({username, password})) {
+  if (verifyLogin.check({email, password})) {
   
   req.session.authenticated = true;   
   
-  req.session.username = username; 
+  req.session.email = email; 
 
-  console.log({username, password}); 
+  console.log({email, password}); 
 
   res.redirect("/lobby"); 
   } 

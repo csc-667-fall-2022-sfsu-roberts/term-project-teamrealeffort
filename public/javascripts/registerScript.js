@@ -10,7 +10,6 @@ function register_validation(e) {
     }
     const message = document.createElement("p")
     message.setAttribute(
-
       "style",
       "color:red"
     )
@@ -34,3 +33,13 @@ function register_validation(e) {
     return true;
   }
 }
+
+var form = document.getElementById('register-form');
+form.addEventListener('submit', function (e) {
+  let validationResult = register_validation(e)
+  if (validationResult) {
+    form.setAttribute("action", "/register");
+    form.setAttribute("method", "post");
+    form.submit()
+  }
+})

@@ -2,36 +2,37 @@ extends layout
 
 block extra_script
   link(rel="stylesheet", href="/stylesheets/register.css")
+  
 block content
-  div(class="login-form rounded-4 d-flex flex-column justify-content-center align-items-center")
+  div(class="register-form rounded-4 d-flex flex-column justify-content-center align-items-center")
     h1(class="mb-5")
       |Register
-    form(action = '/register' method = 'post')
+    form(id="register-form")
       div(class="mb-3") 
-        label(for="exampleInputEmail1" required class="form-label")
+        label(for="username" required class="form-label")
           | Username
-        input(type="email" class="form-control" aria-describedby="emailHelp" id= "username" name= "username")
+        input(type="text" class="form-control" id= "username" name= "username")
       div(class="mb-3") 
-        label(for="exampleInputEmail1" class="form-label")
+        label(for="email" class="form-label")
           | Email address
         input(type="email" required class="form-control" id="email" name="email" aria-describedby="emailHelp")
         div(id="emailHelp" class="form-text")
           | We'll never share your email with anyone else.
       div(class="mb-3") 
           div()
-            label(for="inputPassword6" class="col-form-label")
+            label(for="password" class="col-form-label")
               | Password
           div()
-            input(type="password" required pattern="^.{8,20}$" title="Must be 8-20 characters long" id="password" name="password" class="form-control" aria-describedby="passwordHelpInline")
+            input(type="password" required pattern="^.{8,20}$" title="Must be 8-20 characters long" id="password" name="password" class="form-control")
           div()
             span(id="passwordHelpInline" class="form-text")
               | Must be 8-20 characters long.
       div(class="mb-3") 
           div()
-            label(for="inputPassword6" class="col-form-label")
+            label(for="password-confirm" class="col-form-label")
               | Confirm Password
           div()
-            input(type="password" required pattern="^.{8,20}$" title="Must be 8-20 characters long" id="confirm_password" class="form-control" aria-describedby="passwordHelpInline")
+            input(type="password" required pattern="^.{8,20}$" title="Must be 8-20 characters long" id="confirm_password" class="form-control")
       button(type="submit" class="btn btn-primary")
         | submit
-      
+  script(src="/javascripts/registerScript.js")

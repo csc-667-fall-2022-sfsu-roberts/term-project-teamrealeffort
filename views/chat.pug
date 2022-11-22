@@ -1,0 +1,12 @@
+script(src="/socket.io/socket.io.js")
+H2(class="text-center")="Chat Room"
+div(style="height: 500px")
+form(id="chat-box-form")
+    div(class="form-floating")
+        textarea(class="form-control" placeholder="Send Your Nice Message1" type="text" name="chat-message" id="chat-box")
+        label(for="floatingTextarea2")
+            |Send Your Nice Message
+        div(class="text-end me-1 mb-1")
+            button(type="submit" class="btn btn-primary ")
+                |Send
+script(src="/javascripts/lobby.js")
