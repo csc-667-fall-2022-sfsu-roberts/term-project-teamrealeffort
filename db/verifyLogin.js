@@ -1,13 +1,13 @@
 const db = require("./index"); 
 
-const VERIFY_USER = 'SELECT ("UserName", "Password") FROM "User" WHERE "UserName" = ${username} AND "Password" = ${password}'; 
+const VERIFY_USER = 'SELECT ("Email", "Password") FROM "User" WHERE "Email" = ${email} AND "Password" = ${password}'; 
 
 
-const check = ({username, password}) => { 
+const check = ({email, password}) => { 
 
 
 
- return db.one(VERIFY_USER, {username, password}); 
+ return db.one(VERIFY_USER, {email, password}); 
 
 
 }; 

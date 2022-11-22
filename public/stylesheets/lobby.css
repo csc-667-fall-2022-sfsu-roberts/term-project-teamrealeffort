@@ -6,15 +6,19 @@
     max-width: none;
 }
 
-.modal-content:hover {
+.game-room:hover {
     border: 4px rgb(70, 70, 238) solid;
     cursor: pointer;
 }
 
-.modal-content {
-    width: 25%;
+#chat-box {
+    height: 100px; 
+    resize: none;
+    border-style:  solid;
+    border-color: #ced4da;
+    border-width: 1px 0 0 0;
+    border-radius: 0;
 }
-
 
 .title {
     color: white;
