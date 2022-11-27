@@ -12,16 +12,30 @@ router.get('/', (req, res, next) =>  {
 router.post('/', (req, res, next) =>  {
   const {email, password} = req.body; 
 
-  if (verifyLogin.check({email, password})) {
+  verifyLogin.check({email, password})
+  .then(({id}) => {
+
+    req.session.authenticated = true;   
   
-  req.session.authenticated = true;   
+
+    req.session.userId = id; 
+    
+    req.session.email = email; 
   
-  req.session.email = email; 
+    console.log({email, password}); 
+  
+    res.redirect("/lobby"); 
 
-  console.log({email, password}); 
 
-  res.redirect("/lobby"); 
-  } 
-});
+  }).catch((error) => {
 
+   console.log({error}); 
+   res.redirect('login'); 
+
+  }); 
+
+
+}); 
+  
+  
 module.exports = router;
