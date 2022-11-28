@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sessionInstance = require('./config/session'); 
+const protect = require("./config/protect"); 
+
 
 if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
@@ -12,10 +14,10 @@ if(process.env.NODE_ENV === 'development') {
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login')
-var registerRouter = require('./routes/register')
-var lobbyRouter = require('./routes/lobby')
-
+var loginRouter = require('./routes/login'); 
+var registerRouter = require('./routes/register'); 
+var lobbyRouter = require('./routes/lobby'); 
+const chatRouter = require('./routes/api/chat'); 
 
 
 var app = express();
@@ -36,9 +38,10 @@ app.use(sessionInstance);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/login', loginRouter)
-app.use('/register', registerRouter)
-app.use('/lobby', lobbyRouter)
+app.use('/login', loginRouter); 
+app.use('/register', registerRouter); 
+app.use('/lobby', lobbyRouter); 
+app.use("/chat", protect, chatRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

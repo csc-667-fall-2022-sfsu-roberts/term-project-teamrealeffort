@@ -9,8 +9,6 @@ router.get('/', protect,  (req, res, next) =>  {
   const {sessionID} = req; 
   const {email} = req.session;  
 
-
-
   console.log(req.session); 
   console.log({sessionID, email}); 
 
