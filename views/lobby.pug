@@ -10,7 +10,7 @@ block content
     div(class="modal-dialog ms-3 me-3")
       h1(class="text-center title")="Game Lobby"
       if email 
-        H2(class="text-center title") WELCOME #{email}
+        H2(class="text-center title") WELCOME #{email} (#{user_id})
       div(class="container-fluid")
         div(class="row")
           div(class="col-3")
@@ -21,7 +21,9 @@ block content
                 |Test Game Room
 block footer 
   script(src = "/socket.io/socket.io.js")
-  script(src = "/javascripts/chat.js")
+  script(src = "/javascript/setup.js")
+  script(src = "/javascript/chat.js")
+  script(src = "/javascript/gameManagement.js")
                   
             
 

@@ -1,20 +1,9 @@
-const db = require("./index"); 
+const db = require("./index");
 
-const REGISTER_USER = 'INSERT INTO "User" ("UserName", "Password", "Email") VALUES (${username}, ${password}, ${email}) RETURNING "UserId" '; 
+const REGISTER_USER = 'INSERT INTO "user" ("username", "password", "email") VALUES (${username}, ${password}, ${email}) RETURNING "user_id" ';
 
+const register = ({ username, password, email }) => {
+  return db.one(REGISTER_USER, { username, password, email });
+};
 
-const register = ({username, password, email }) => { 
-
-
-
- return db.one(REGISTER_USER, {username, password, email}); 
-
-
-}; 
-
-
-
-
-
-
-module.exports = {register}; 
+module.exports = { register }; 
