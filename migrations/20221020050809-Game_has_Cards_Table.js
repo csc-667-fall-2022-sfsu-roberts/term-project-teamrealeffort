@@ -1,38 +1,14 @@
 'use strict';
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable(
-      'Game_has_Cards',
-      {
-        User_UserId: {
-          type: Sequelize.INTEGER,
-          allowNull: false
-        },
-        Game_GameId: {
-          type: Sequelize.INTEGER,
-          allowNull: false
-        },
-        Card_CardId: {
-          type: Sequelize.INTEGER,
-          allowNull: false
-        },
-        Discarded: {
-          type: Sequelize.INTEGER,
-          allowNull: false
-        },
-        In_Deck: {
-          type: Sequelize.INTEGER,
-          allowNull: false
-        },
-        Order: {
-          type: Sequelize.INTEGER,
-          allowNull: false
-        }
-      }
-    );
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('game_cards', {
+      game_id: { type: Sequelize.INTEGER, allowNull: false },
+      card_id: { type: Sequelize.INTEGER, allowNull: false },
+      user_id: { type: Sequelize.INTEGER, allowNull: false, defaultvalue: 0 },
+    });
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Game');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("game_cards");
   }
 };

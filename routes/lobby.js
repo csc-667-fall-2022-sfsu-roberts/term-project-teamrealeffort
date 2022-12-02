@@ -4,12 +4,11 @@ var router = express.Router();
 
 router.get('/', protect, (req, res, next) => {
   const { sessionID } = req;
-  const { email } = req.session;
+  const { email, userId } = req.session;
 
-  console.log(req.session);
-  console.log({ sessionID, email });
+  console.log({ sessionID, email, userId});
 
-  res.render('lobby', { sessionID, email });
+  res.render('lobby', { sessionID, email , userId});
 });
 
 module.exports = router;

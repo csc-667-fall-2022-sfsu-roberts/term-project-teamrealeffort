@@ -11,11 +11,6 @@ module.exports = {
       title: {
         type: Sequelize.STRING,
       },
-      createAt: {
-        type: Sequelize.DATE,
-        default: Sequelize.literal("NOW()"),
-        allowNull: false
-      },
     });
   },
 

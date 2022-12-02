@@ -1,0 +1,7 @@
+H2(class="text-center")="Games List"
+div(style= "height: 200px")
+  ul
+    form(action="/api/games/create" method="post")
+      label(for="title" ) Title (optional):
+      input(type = "text", name = "title")
+      button#create-game Create a new game

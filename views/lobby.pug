@@ -4,7 +4,7 @@ block extra_script
   link(rel="stylesheet", href="/stylesheets/lobby.css")
 block content
   div(class="lobby-form rounded-4 d-flex flex-column justify-content-center align-items-center")
-    
+  
   div(class="modal-backdrop fade show")
   div(class="modal fade show server_list" id="modal" tabindex="-1" aria-hidden="true")
     div(class="modal-dialog ms-3 me-3")
@@ -18,17 +18,10 @@ block content
                 include chat.pug
           div(class="col-9")
               div(class="modal-content game-room")
-                |Test Game Room
+                include gameslist.pug
 block footer 
   script(src = "/socket.io/socket.io.js")
   script(src = "/javascript/setup.js")
   script(src = "/javascript/chat.js")
   script(src = "/javascript/gameManagement.js")
                   
-            
-
-          
-
-    
-    
-        
