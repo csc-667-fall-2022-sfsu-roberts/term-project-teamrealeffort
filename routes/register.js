@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   const { username, password, email } = req.body;
-
+  
   Users.register({ username, password, email })
     .then(({ id, username }) => {
       
@@ -21,7 +21,6 @@ router.post('/', (req, res, next) => {
       console.log({ username, password, email , id});
 
       res.redirect('/login');
-
     })
     .catch(error => {
       console.log({ error });

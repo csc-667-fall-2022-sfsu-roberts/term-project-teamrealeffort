@@ -3,7 +3,6 @@ const db = require("./index");
 const CREATE_SQL = "INSERT INTO games (title) VALUES(${title}) RETURNING id";
 const ADD_USER_SQL = "INSERT INTO game_users (user_id, game_id) VALUES(${user_id}, ${game_id}) RETURNING game_id";
 const LIST_SQL = "SELECT * FROM games"
-const USER_ID = "SELECT id FROM users WHERE email = ${email}";
 
 const create = (user_id, title) => {
   console.log("Title: " + title);

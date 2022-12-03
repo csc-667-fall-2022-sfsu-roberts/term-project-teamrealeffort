@@ -13,7 +13,8 @@ module.exports = {
       },
       seat: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
       },
       current: {
         type: Sequelize.BOOLEAN,

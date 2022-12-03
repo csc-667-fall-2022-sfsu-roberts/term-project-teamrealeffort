@@ -8,10 +8,11 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const { email, password } = req.body;
+  const {id, email, password } = req.body;
 
-  verifyLogin.check({ email, password })
+  verifyLogin.check({ id, email, password })
     .then(({ id }) => {
+
       req.session.authenticated = true;
       req.session.userId = id;
       req.session.email = email;
