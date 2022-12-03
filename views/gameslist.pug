@@ -1,6 +1,13 @@
+#games-list
 H2(class="text-center")="Games List"
 div(style= "height: 200px")
-  ul
+    ul
+      each game in games
+        li 
+          span= game.title
+          form(action=`/api/games/${game.id}/join` method="post" target="_blank")
+            button Join Game
+            
     form(action="/api/games/create" method="post")
       label(for="title" ) Title (optional):
       input(type = "text", name = "title")

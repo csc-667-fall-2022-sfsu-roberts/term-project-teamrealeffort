@@ -1,31 +1,25 @@
 'use strict';
 
 module.exports = {
-
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('game_users', {
+    await queryInterface.createTable('game_cards', {
       game_id: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      user_id: {
+      card_id: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      seat: {
+      user_id:
+      {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
+        allowNull: false, defaultvalue: 0
       },
-      current: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      }
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('game_users');
+    await queryInterface.dropTable("game_cards");
   }
 };

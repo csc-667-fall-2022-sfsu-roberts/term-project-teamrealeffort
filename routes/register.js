@@ -15,7 +15,7 @@ router.post('/', (req, res, next) => {
   Users.register({ username, password, email })
     .then(({ id, username }) => {
       
-      req.session.userId = id;
+      req.session.user_id = id;
       req.session.username = username;
       req.session.authenticated = true;
       console.log({ username, password, email , id});

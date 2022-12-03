@@ -1,27 +1,28 @@
 'use strict';
+
 module.exports = {
- 
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable(
-      'Messages',
+
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable(
+      'messages',
       {
-          User_UserId: {
+        user_id: {
           type: Sequelize.INTEGER,
           allowNull: false
-        }, 
-          Game_GameId: { 
-          type: Sequelize.INTEGER, 
+        },
+        game_id: {
+          type: Sequelize.INTEGER,
           allowNull: false
-        }, 
-          Content: { 
-          type: Sequelize.TEXT, 
+        },
+        content: {
+          type: Sequelize.TEXT,
           allowNull: false
         }
       }
     );
-  }, 
-  
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Messages');
+  },
+
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('messages');
   }
 };

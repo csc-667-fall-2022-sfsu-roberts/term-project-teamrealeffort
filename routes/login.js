@@ -12,10 +12,10 @@ router.post('/', (req, res, next) => {
 
   verifyLogin.check({ id, email, password })
     .then(({ id }) => {
-
       req.session.authenticated = true;
-      req.session.userId = id;
+      req.session.user_id = id;
       req.session.email = email;
+
       console.log({ email, password, id });
       res.redirect("/lobby");
 
