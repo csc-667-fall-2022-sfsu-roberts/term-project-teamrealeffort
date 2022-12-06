@@ -4,13 +4,13 @@ block extra_script
   link(rel="stylesheet", href="/stylesheets/lobby.css")
 block content
   div(class="lobby-form rounded-4 d-flex flex-column justify-content-center align-items-center")
-    
+  
   div(class="modal-backdrop fade show")
   div(class="modal fade show server_list" id="modal" tabindex="-1" aria-hidden="true")
     div(class="modal-dialog ms-3 me-3")
       h1(class="text-center title")="Game Lobby"
       if email 
-        H2(class="text-center title") WELCOME #{email}
+        H2(class="text-center title") WELCOME #{email} (#{user_id})
       div(class="container-fluid")
         div(class="row")
           div(class="col-3")
@@ -18,15 +18,10 @@ block content
                 include chat.pug
           div(class="col-9")
               div(class="modal-content game-room")
-                |Test Game Room
+                include gameslist.pug
 block footer 
   script(src = "/socket.io/socket.io.js")
-  script(src = "/javascripts/chat.js")
+  script(src = "/javascript/setup.js")
+  script(src = "/javascript/chat.js")
+  script(src = "/javascript/gameManagement.js")
                   
-            
-
-          
-
-    
-    
-        

@@ -5,8 +5,6 @@ const sessionInstance = session({
     cookie: { maxAge: Date.now()+(24 * 60 * 60)}, 
     resave: false, 
     saveUninitialized: true, 
-
-
 }); 
 
 module.exports = sessionInstance; 
