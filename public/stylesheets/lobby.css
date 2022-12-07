@@ -6,12 +6,13 @@
     max-width: none;
 }
 
-.game-room:hover {
-    border: 4px rgb(70, 70, 238) solid;
-    cursor: pointer;
+
+.game-room {
+    margin-bottom: 3em;
+    border: 1px black solid;
 }
 
-#chat-box {
+#message {
     height: 100px; 
     resize: none;
     border-style:  solid;

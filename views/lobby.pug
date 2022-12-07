@@ -17,11 +17,11 @@ block content
               div(class="modal-content")
                 include chat.pug
           div(class="col-9")
-              div(class="modal-content game-room")
-                include gameslist.pug
+            div(class="modal-content")
+              include gameslist.pug
 block footer 
   script(src = "/socket.io/socket.io.js")
   script(src = "/javascript/setup.js")
-  script(src = "/javascript/chat.js")
+  script(src = "/javascript/lobby.js")
   script(src = "/javascript/gameManagement.js")
                   
