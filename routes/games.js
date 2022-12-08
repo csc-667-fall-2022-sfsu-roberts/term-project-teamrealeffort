@@ -6,10 +6,10 @@ const GameLogic = require("../game-logic");
 const CARDS = require("../config/cards");
 
 router.post("/create", (request, response) => {
-  const { userId } = request.session;
+  const { user_id } = request.session;
   const { title = "" } = request.body;
 
-  Games.create(userId, title)
+  Games.create(user_id, title)
     .then(({ game_id }) => {
       response.redirect(`/games/${game_id}`);
 
@@ -25,17 +25,17 @@ router.post("/create", (request, response) => {
 
 router.post("/:id", (request, response) => {
   const { id: game_id } = request.params;
-  const { userId } = request.session;
-
-  response.json({ game_id, user_id: userId });
+  const { user_id } = request.session;
+  console.log("The userID is  " + user_id);
+  response.json({ game_id, user_id: user_id });
 });
 
 router.post("/:id/draw", (request, response) => {
   const { id: game_id } = request.params;
-  const { userId } = request.session;
+  const { user_id } = request.session;
 
-  Games.drawCard(game_id, userId)
-    .then(() => Games.setNextPlayer(game_id, userId))
+  Games.drawCard(game_id, user_id)
+    .then(() => Games.setNextPlayer(game_id, user_id))
     .then(() => GameLogic.status(game_id, request.app.io));
 });
 
@@ -52,7 +52,7 @@ router.get("/:id", (request, response) => {
 
   Promise.all([Games.userCount(id), Games.info(id)])
     .then(([{ count }, { title }]) => {
-      response.render("protected/game", {
+      response.render("games", {
         id,
         title,
         count,
@@ -69,14 +69,14 @@ router.get("/:id", (request, response) => {
 router.get("/:id/:message", (request, response) => {
   const { id, message } = request.params;
 
-  response.render("protected/game", { id, message });
+  response.render("games", { id, message });
 });
 
 router.post("/:id/join", (request, response) => {
-  const { userId } = request.session;
+  const { user_id } = request.session;
   const { id } = request.params;
 
-  Games.addUser(userId, id)
+  Games.addUser(user_id, id)
     .then(() => Games.userCount(id))
     .then(({ count }) => {
       request.app.io.emit(`game:${id}:player-joined`, {
@@ -93,43 +93,44 @@ router.post("/:id/join", (request, response) => {
       response.redirect(`/games/${id}`);
     })
     .catch((error) => {
+      console.log("JOIN ERROR!");
       console.log({ error });
     });
 });
 
 router.post("/:id/play", (request, response) => {
-  const { userId } = request.session;
+  const { user_id } = request.session;
   const { id: game_id } = request.params;
   const { card_id } = request.body;
 
   // Check that the user is in the game
   // If not, ignore
-  Games.isUserInGame(game_id, userId)
+  Games.isUserInGame(game_id, user_id)
     .then((isUserInGame) => {
       if (isUserInGame) {
         return Promise.resolve();
       } else {
-        return Promise.reject(`${userId} not in game`);
+        return Promise.reject(`${user_id} not in game`);
       }
     })
     // Check that its the users turn
     // If not, ignore
-    .then(() => Games.isUsersTurn(game_id, userId))
+    .then(() => Games.isUsersTurn(game_id, user_id))
     .then((isUsersTurn) => {
       if (isUsersTurn) {
         return Promise.resolve();
       } else {
-        return Promise.reject(`not ${userId}'s turn`);
+        return Promise.reject(`not ${user_id}'s turn`);
       }
     })
     // Check the card that is being played is held by the user
     // If not, ignore
-    .then(() => Games.userHasCard(game_id, userId, card_id))
+    .then(() => Games.userHasCard(game_id, user_id, card_id))
     .then((userHasCard) => {
       if (userHasCard) {
         return Promise.resolve();
       } else {
-        return Promise.reject(`${userId} does not hold ${card_id}`);
+        return Promise.reject(`${user_id} does not hold ${card_id}`);
       }
     })
     // Check the card that is being played is a valid play
@@ -155,7 +156,7 @@ router.post("/:id/play", (request, response) => {
       Games.playerDiscard(game_id, card.id, discard.id)
     )
     // Change current user
-    .then(() => Games.setNextPlayer(game_id, userId))
+    .then(() => Games.setNextPlayer(game_id, user_id))
     // Broadcast game state
     .then(() => GameLogic.status(game_id, request.app.io))
     .catch((error) => {
