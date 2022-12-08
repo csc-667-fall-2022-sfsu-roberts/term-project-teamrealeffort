@@ -1,7 +1,6 @@
 const { response } = require('express');
 const Users = require('../db/users');
 var express = require('express');
-const { request } = require('http');
 var router = express.Router();
 const db = require('../db');
 
