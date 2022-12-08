@@ -1,20 +1,54 @@
 const db = require("./index");
 
-const CREATE_SQL = "INSERT INTO games (title) VALUES(${title}) RETURNING id";
-const ADD_USER_SQL = "INSERT INTO game_users (id, game_id) VALUES(${user_id}, ${game_id}) RETURNING game_id";
-const CHECK_USER_IN_GAME_SQL = "SELECT * FROM game_users WHERE user_id =${user_id}";
-const LIST_SQL = "SELECT * FROM games"
+const CREATE_SQL = "INSERT INTO games (title) VALUES (${title}) RETURNING id";
 
-const COUNT_USERS_IN_GAME = "SELECT COUNT(*) FROM game_users WHERE game_id = ${game_id}";
+const CHECK_USER_IN_GAME_SQL =
+  "SELECT * FROM game_users WHERE user_id=${user_id} AND game_id = ${game_id}";
+
+const ADD_USER_SQL =
+  "INSERT INTO game_users (game_id, user_id) VALUES (${game_id}, ${user_id}) RETURNING game_id";
+
+const ACTIVE_GAMES =
+  "SELECT id, title FROM games LEFT JOIN game_users ON games.id = game_users.game_id WHERE game_users.user_id=${user_id}";
+
+const JOINABLE_GAMES =
+  "SELECT * FROM games WHERE id NOT IN (" +
+  "SELECT id FROM games LEFT JOIN game_users ON games.id = game_users.game_id WHERE game_users.user_id=${user_id}" +
+  ")";
+
+const COUNT_USERS_IN_GAME =
+  "SELECT COUNT(*) FROM game_users WHERE game_id = ${game_id}";
+
 const GAME_INFO = "SELECT * FROM GAMES WHERE id = ${game_id}";
-const GET_PLAYERS = "SELECT users.id, users.username, game_users.seat, game_users.current, (SELECT COUNT(*)::int FROM game_cards WHERE game_id=${game_id} AND user_id=users.id) as card_count FROM users, game_users WHERE game_users.game_id=${game_id} AND users.id=game_users.user_id";
 
+const create = (user_id, title = "") => {
+  return db
+    .one(CREATE_SQL, { title })
+    .then(({ id: game_id }) => addUser(user_id, game_id));
+};
 
-const getPlayers = (game_id) => db.any(GET_PLAYERS, { game_id });
+const addUser = (user_id, game_id) => {
+  return db
+    .none(CHECK_USER_IN_GAME_SQL, { user_id, game_id })
+    .then(() => db.one(ADD_USER_SQL, { user_id, game_id }));
+};
 
-const userCount = (game_id) => db.one(COUNT_USERS_IN_GAME, { game_id });
+const active = (user_id) => db.any(ACTIVE_GAMES, { user_id });
+
+const joinable = (user_id) => db.any(JOINABLE_GAMES, { user_id });
+
+const all = (user_id) =>
+  Promise.all([active(user_id), joinable(user_id)]).then(
+    ([active, joinable]) => ({ active, joinable })
+  );
 
 const info = (game_id) => db.one(GAME_INFO, { game_id });
+const userCount = (game_id) => db.one(COUNT_USERS_IN_GAME, { game_id });
+
+const GET_PLAYERS =
+  "SELECT users.id, users.username, game_users.seat, game_users.current, (SELECT COUNT(*)::int FROM game_cards WHERE game_id=${game_id} AND user_id=users.id) as card_count FROM users, game_users WHERE game_users.game_id=${game_id} AND users.id=game_users.user_id";
+
+const getPlayers = (game_id) => db.any(GET_PLAYERS, { game_id });
 
 const shuffle = (array) => {
   let currentIndex = array.length,
@@ -35,7 +69,6 @@ const shuffle = (array) => {
 
   return array;
 };
-
 
 const getCanonicalCards = () => db.any("SELECT * FROM cards");
 const insertCard = (game_id, card_id) =>
@@ -165,35 +198,24 @@ const drawCard = (game_id, user_id) =>
     .then(() => getNextDrawableCards(game_id, 1))
     .then(([{ card_id }]) => assignCard({ game_id, user_id, card_id }));
 
-const create = (user_id, title) => {
-  console.log("Title: " + title);
-
-  return db
-    .one(CREATE_SQL, { title })
-    .then(({ id: game_id }) => addUser(user_id, game_id));
-}
-
-const addUser = (user_id, game_id) => {
-  return db.one(ADD_USER_SQL, { user_id, game_id })
+module.exports = {
+  create,
+  all,
+  addUser,
+  userCount,
+  info,
+  getPlayers,
+  initDeck,
+  getNextDrawableCards,
+  assignCard,
+  setPlayerSeat,
+  getPlayerHand,
+  getCurrentDiscard,
+  isUserInGame,
+  isUsersTurn,
+  userHasCard,
+  getCard,
+  playerDiscard,
+  setNextPlayer,
+  drawCard,
 };
-
-// need to figure out better error handling than this for when
-// user is already in a game so they aren't readded
-
-/*
-const addUser = (user_id, game_id) => {
-  return db
-    .none(CHECK_USER_IN_GAME_SQL, { user_id })
-    .then(() => db.one(ADD_USER_SQL, { user_id, game_id }));
-}
-*/
-
-const all = () => {
-  return db.any(LIST_SQL).then((games) => {
-    return games;
-  });
-};
-
-
-
-module.exports = { create, addUser, all, getPlayers, playerDiscard, initDeck, setPlayerSeat, getPlayerHand, getCurrentDiscard, isUserInGame, isUsersTurn, userHasCard, getCard, setNextPlayer, drawCard, userCount, info };
