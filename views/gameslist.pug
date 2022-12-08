@@ -5,10 +5,10 @@ div(style= "height: 200px")
       each game in games
         li 
           span= game.title
-          form(action=`/api/games/${game.id}/join` method="post" target="_blank")
+          form(action=`/games/${game.id}/join` method="post" target="_blank")
             button Join Game
             
-    form(action="/api/games/create" method="post")
+    form(action="/games/create" method="post")
       label(for="title" ) Title (optional):
       input(type = "text", name = "title")
       button#create-game Create a new game

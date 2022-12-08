@@ -52,7 +52,7 @@ router.get("/:id", (request, response) => {
 
   Promise.all([Games.userCount(id), Games.info(id)])
     .then(([{ count }, { title }]) => {
-      response.render("games", {
+      response.render("protected/game", {
         id,
         title,
         count,
@@ -69,7 +69,7 @@ router.get("/:id", (request, response) => {
 router.get("/:id/:message", (request, response) => {
   const { id, message } = request.params;
 
-  response.render("games", { id, message });
+  response.render("protected/game", { id, message });
 });
 
 router.post("/:id/join", (request, response) => {

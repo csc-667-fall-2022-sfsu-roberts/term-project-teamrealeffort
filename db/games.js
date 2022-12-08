@@ -1,7 +1,7 @@
 const db = require("./index");
 
 const CREATE_SQL = "INSERT INTO games (title) VALUES(${title}) RETURNING id";
-const ADD_USER_SQL = "INSERT INTO game_users (user_id, game_id) VALUES(${user_id}, ${game_id}) RETURNING game_id";
+const ADD_USER_SQL = "INSERT INTO game_users (id, game_id) VALUES(${user_id}, ${game_id}) RETURNING game_id";
 const CHECK_USER_IN_GAME_SQL = "SELECT * FROM game_users WHERE user_id =${user_id}";
 const LIST_SQL = "SELECT * FROM games"
 
