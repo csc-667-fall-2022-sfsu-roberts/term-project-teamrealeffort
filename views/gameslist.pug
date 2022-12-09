@@ -1,14 +1,16 @@
 #games-list
 H2(class="text-center")="Games List"
+
 div(class="container-fluid")
   div(class="row" style="margin-left:3em;margin-right:3em")
     each game in games
       div(class="col game-room col-md-6")
         span= game.title
-        form(action=`/api/games/${game.id}/join` method="post" target="_blank")
+        form(action=`/games/${game.id}/join` method="post" target="_blank")
           button Join Game
 
-    form(action="/api/games/create" method="post")
+    form(action="/games/create" method="post")
+
       label(for="title" ) Title (optional):
       input(type = "text", name = "title")
       button#create-game Create a new game
