@@ -8,22 +8,58 @@ function expandTextarea(id) {
   }, false);
 }
 
-function sendMessage() {
-  var form = document.getElementById('chat-box-form');
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var input = document.getElementById('chat-box');
-    if (input.value) {
-      socket.emit('chat-message', input.value);
-      input.value = '';
+function sendMessage(message) {
+  
+    fetch("/chat/0", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: message }),
+    })
+      .then(() => {
+        document.querySelector("#message").value = "";
+      })
+      .catch((error) => console.log(error));
+
+  }
+
+
+function fetchMessage() {
+  let message = ""
+  document.querySelector("#message").addEventListener("keydown", (event) => {
+    message = event.target.value
+    if (event.keyCode === 13) {
+      sendMessage(message)
     }
+    
+  });
+  document.querySelector("#messageSend").addEventListener("click", (event) => {
+    console.log(event);
+    sendMessage(message)
+    
   });
 
-  socket.on('chat-message', function (msg) {
-    console.log(msg)
+  const messages = document.querySelector("#messages");
+
+  sockets.on("chat:0", ({ sender, message, timestamp }) => {
+
+    const template = document.querySelector("message");
+    console.log({ sender, message, timestamp });
+
+    const div = document.createElement("div");
+    const span = document.createElement("span");
+    span.innerText = sender;
+
+
+    const content = document.createElement("p");
+    content.innerText = message;
+
+    div.appendChild(span);
+    div.appendChild(content);
+
+    messages.appendChild(div);
   });
 }
 
-sendMessage()
-expandTextarea('chat-box');
+fetchMessage()
+expandTextarea('message');

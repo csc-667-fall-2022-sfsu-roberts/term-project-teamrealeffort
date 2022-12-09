@@ -3,32 +3,24 @@ extends layout
 block extra_script
   link(rel="stylesheet" href="/stylesheets/lobby.css")
 block content
-
-  div(class="col-3")
-    div(class="modal-content")
-      include chat.pug
-      
-  #games-list
-    h3 Joinable Games
-    ul
-      each game in games.joinable
-        li
-          span= game.title
-          form(action=`/games/${game.id}/join` method="post" target="_blank")
-            button Join game
-
-    h3 Active Games
-    ul
-      each game in games.active
-        li
-          a(href=`/games/${game.id}` target="_blank")= game.title
-
-    form(action="/games/create" method="post")
-      label(for="title") Title (optional):
-      input#title(type="text" name="title")
-      button#create-game Create a new game
-
-
+  div(class="lobby-form rounded-4 d-flex flex-column justify-content-center align-items-center")
+  
+  div(class="modal-backdrop fade show")
+  div(class="modal fade show server_list" id="modal" tabindex="-1" aria-hidden="true")
+    div(class="modal-dialog ms-3 me-3")
+      h1(class="text-center title")="Game Lobby"
+      if email 
+        H2(class="text-center title") WELCOME #{email} (#{user_id})
+      div(class="container-fluid")
+        div(class="row")
+          div(class="col-3")
+              div(class="modal-content")
+                include chat.pug
+          div(class="col-9")
+            div(class="modal-content")
+              include gameslist.pug
 block footer 
-  script(src = "/javascript/chat.js")
+  script(src = "/socket.io/socket.io.js")
+  script(src = "/javascript/setup.js")
+  script(src = "/javascript/lobby.js")
   script(src = "/javascript/gameManagement.js")
