@@ -26,13 +26,14 @@ router.post("/create", (request, response) => {
 router.post("/:id", (request, response) => {
   const { id: game_id } = request.params;
   const { user_id } = request.session;
-  console.log("The userID is  " + user_id);
+  console.log("The userID is " + user_id);
   response.json({ game_id, user_id: user_id });
 });
 
 router.post("/:id/draw", (request, response) => {
   const { id: game_id } = request.params;
   const { user_id } = request.session;
+  console.log("Player " + user_id + " is drawing a card.");
 
   Games.drawCard(game_id, user_id)
     .then(() => Games.setNextPlayer(game_id, user_id))
@@ -103,6 +104,7 @@ router.post("/:id/play", (request, response) => {
   const { id: game_id } = request.params;
   const { card_id } = request.body;
 
+  console.log("Checking if " + user_id + " is in game...")
   // Check that the user is in the game
   // If not, ignore
   Games.isUserInGame(game_id, user_id)
@@ -140,9 +142,9 @@ router.post("/:id/play", (request, response) => {
     )
     .then(([card, discard]) => {
       if (
-        CARDS.NO_COLOR_CARD_TYPES.includes(card.type) ||
+        CARDS.CARDS_WITH_COLORS_MULTIPLE.includes(card.type) ||
         card.color === discard.color ||
-        card.type === discard.type
+        card.type === discard.type 
       ) {
         return Promise.resolve({ card, discard });
       } else {

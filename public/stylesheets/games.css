@@ -87,6 +87,7 @@
     justify-self: end;
     padding-right: 2px;
     align-self: center;
+    background-color: green; 
   }
   
   #discard {
@@ -94,6 +95,7 @@
     justify-self: start;
     padding-left: 2px;
     align-self: center;
+    background-color: red;
   }
   
   .card {
