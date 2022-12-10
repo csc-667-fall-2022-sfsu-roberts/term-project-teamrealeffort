@@ -18,7 +18,7 @@ document.
 
 const messages = document.querySelector("#messages");
 
-sockets.on("chat:0", ({ sender, message, timestamp }) => {
+socket.on("chat:0", ({ sender, message, timestamp }) => {
 
   const template = document.querySelector("message");
   console.log({ sender, message, timestamp });
