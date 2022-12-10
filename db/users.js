@@ -6,7 +6,4 @@ const register = ({ username, password, email }) => {
   return db.one(REGISTER_USER, { username, password, email });
 };
 
-
-
-
 module.exports = { register }; 

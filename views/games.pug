@@ -1,17 +1,5 @@
 extends layout
 
-block styles
-  link(rel="stylesheet", href="/stylesheets/games.css")
-
 block content
-  h1 Game page #{id} (#{title})
-
-  p#waiting(class=`${ready ? "hidden" : ""}`) Waiting on users (#[span.current-count #{count}] of #[span.required-count #{required_count}])
-
-  #game-table(class=`${ready ? "" : "hidden"}`)
-    .draw-pile
-      .card.special
-    #discard
-
-block footer
-  script(src="/javascript/join.js")
+  h1 Welcome to
+  h1 Game #: #{id}
