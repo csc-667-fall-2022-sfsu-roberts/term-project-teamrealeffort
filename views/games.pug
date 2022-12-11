@@ -24,5 +24,8 @@ block content
         p()
           |User2
         img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
-        
+    div(style="width:20%;height:100px")
+      include chat.pug
+  script(src = "/socket.io/socket.io.js")
+  script(src = "/javascript/chat.js")
     
