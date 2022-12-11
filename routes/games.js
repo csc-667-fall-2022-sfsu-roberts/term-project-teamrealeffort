@@ -142,7 +142,7 @@ router.post("/:id/play", (request, response) => {
     )
     .then(([card, discard]) => {
       if (
-        CARDS.CARDS_WITH_COLORS_MULTIPLE.includes(card.type) ||
+        CARDS.NO_COLOR_CARD_TYPES.includes(card.type) ||
         card.color === discard.color ||
         card.type === discard.type 
       ) {
