@@ -172,3 +172,5 @@ fetch(window.location.pathname, { method: "post" })
   .then(() => {
     fetch(`${window.location.pathname}/status`, { method: "post" });
   });
+
+  // TODO: Game Win 

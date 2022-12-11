@@ -25,18 +25,26 @@ const GET_PLAYERS =
   "SELECT users.id, users.username, game_users.seat, game_users.current, (SELECT COUNT(*)::int FROM game_cards WHERE game_id=${game_id} AND user_id=users.id) as card_count FROM users, game_users WHERE game_users.game_id=${game_id} AND users.id=game_users.user_id";
 
 const create = (user_id, title = "") => {
-  console.log("Game created!"); 
+  console.log("Game created!");
   return db
     .one(CREATE_SQL, { title })
     .then(({ id: game_id }) => addUser(user_id, game_id));
 };
 
 const addUser = (user_id, game_id) => {
-  console.log("User added! " + user_id); 
+  console.log("User added! " + user_id);
   return db
     .none(CHECK_USER_IN_GAME_SQL, { user_id, game_id })
     .then(() => db.one(ADD_USER_SQL, { user_id, game_id }));
 };
+
+const isGameOver = (user_id, game_id) =>
+  db.one(
+    "SELECT * FROM game_cards WHERE game_id=${game_id} AND user_id=${user_id}",
+    { game_id, user_id }
+  )
+    .then(() => false)
+    .catch(() => true);
 
 const active = (user_id) => db.any(ACTIVE_GAMES, { user_id });
 
@@ -53,7 +61,7 @@ const userCount = (game_id) => db.one(COUNT_USERS_IN_GAME, { game_id });
 const getPlayers = (game_id) => db.any(GET_PLAYERS, { game_id });
 
 const shuffle = (array) => {
-  console.log("Shuffling..."); 
+  console.log("Shuffling...");
 
   let currentIndex = array.length,
     randomIndex;
@@ -80,7 +88,7 @@ const insertCard = (game_id, card_id) =>
     "INSERT INTO game_cards (game_id, card_id, user_id) VALUES (${game_id}, ${card_id}, 0) RETURNING *",
     { game_id, card_id }
   );
-  
+
 const discardCard = (game_id, card_id) =>
   db.none(
     "UPDATE game_cards SET user_id=-1 WHERE game_id=${game_id} AND card_id=${card_id}",
@@ -88,6 +96,7 @@ const discardCard = (game_id, card_id) =>
   );
 
 const playerDiscard = (game_id, card_id, discard_id) =>
+  // Sets played cards (user_id = -2) to unplayed cards (user_id = 0)
   db
     .none(
       "UPDATE game_cards SET user_id=-2 WHERE game_id=${game_id} AND card_id=${discard_id}",
@@ -168,6 +177,7 @@ const userHasCard = (game_id, user_id, card_id) =>
 const getCard = (card_id) =>
   db.one("SELECT * FROM cards WHERE id=${card_id}", { card_id });
 
+// TODO: This should take one more parameter, which would ultimately be the playercount?
 const setNextPlayer = (game_id, user_id) =>
   db
     .one(
@@ -195,7 +205,10 @@ const drawCard = (game_id, user_id) =>
     )
     .then(({ count }) => {
       if (count <= 1) {
-        // TODO shuffle discarded
+        db.none(
+          "UPDATE game_cards SET user_id = 0 WHERE game_id=${game_id} AND user_id = -2",
+          { game_id }
+        )
       } else {
         return Promise.resolve();
       }
@@ -223,4 +236,5 @@ module.exports = {
   playerDiscard,
   setNextPlayer,
   drawCard,
+  isGameOver,
 };

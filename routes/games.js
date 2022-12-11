@@ -157,6 +157,15 @@ router.post("/:id/play", (request, response) => {
     .then(({ card, discard }) =>
       Games.playerDiscard(game_id, card.id, discard.id)
     )
+
+    // TODO: Check for game state, needs testing
+    .then(() => Games.isGameOver(game_id, user_id))
+    .then((isGameOver) => {
+      if (isGameOver) {
+        return Promise.resolve(`Player ${user_id} has won!`);
+      }
+    })
+
     // Change current user
     .then(() => Games.setNextPlayer(game_id, user_id))
     // Broadcast game state
