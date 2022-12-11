@@ -5,6 +5,17 @@
     right: 0;
 }
 
+.chat-session {
+    width:20%;
+    background:white;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+/* .user-name {
+    background: white;
+} */
+
 #message {
     height: 100px; 
     resize: none;
@@ -12,4 +23,5 @@
     border-color: #ced4da;
     border-width: 1px 0 0 0;
     border-radius: 1;
+    
 }

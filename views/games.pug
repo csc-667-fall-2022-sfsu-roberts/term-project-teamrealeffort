@@ -5,26 +5,26 @@ block extra_script
 block content
   div(class="container-fluid vh-100")
     div(class="row justify-content-center align-items-center")
-      div(class="text-center")
+      div(class="text-center user-name")
         p()
           |User1
         img(src="/images/avatar.jpg", style="width:5%" alt="avatar")
       
     div(class="games-user ms-0 me-0 row justify-content-center align-items-center")
-      div(class="text-center")
+      div(class="text-center user-name")
         p()
           |User4
         img(src="/images/avatar.jpg", style="width:5%" alt="avatar")
     div(class="d-flex justify-content-center align-items-center" style="height:50%")
       div()
-        p()
+        p(class="text-start user-name")
           |User3
         img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
-      div(class="text-end")
+      div(class="text-end user-name")
         p()
           |User2
         img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
-    div(style="width:20%;height:100px")
+    div(class="chat-session")
       include chat.pug
   script(src = "/socket.io/socket.io.js")
   script(src = "/javascript/setup.js")
