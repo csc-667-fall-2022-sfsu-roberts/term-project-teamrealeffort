@@ -1,0 +1,148 @@
+@use "sass:list";
+
+$scale: 3;
+$height: calc(257 / $scale);
+$width: calc(170 / $scale);
+$y-padding: calc((286 - 258) / $scale);
+$x-padding: calc((201 - 170) / $scale);
+
+#game-table {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto;
+  grid-template-areas:
+    ". player-minus-2 player-minus-2 . chat"
+    "player-minus-1 draw-pile discard-pile player-minus-3 chat"
+    ". player-current player-current . chat";
+
+  &.hidden {
+    display: none;
+  }
+}
+
+#waiting-message.hidden {
+  display: none;
+}
+
+.player {
+  border: 1px solid gray;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+
+  .username {
+    text-align: center;
+
+    img { border-radius: 25px;}
+  }
+
+  .hand {
+    .card {
+      width: #{calc($width / $scale)}px;
+
+      &:last-child {
+        width: #{$width}px;
+      }
+    }
+  }
+}
+
+.chat {
+  grid-area: chat;
+}
+
+.hand {
+  display: flex;
+}
+
+.player-taking-turn {
+  .username img {
+    border: 4px solid rgba(256,0,0,0.3)
+  }
+}
+
+.player.player-current {
+  grid-area: player-current;
+
+  .hand {
+    justify-content: space-around;
+
+    .card {
+      width: #{$width}px;
+      transform: scale(1);
+      transition: 0.5s all ease;
+      z-index: auto;
+
+      &:hover {
+        transform: scale(1.3);
+        z-index: 1000;
+      }
+    }
+  }
+}
+
+.player-count-2 {
+  .player-minus-1 {
+    grid-area: player-minus-2;
+  }
+}
+
+.player-count-3 {
+  .player-minus-1 {
+    grid-area: player-minus-1;
+  }
+
+  .player-minus-2 {
+    grid-area: player-minus-3;
+  }
+}
+
+.player-count-4 {
+  .player-minus-1 {
+    grid-area: player-minus-1;
+  }
+
+  .player-minus-2 {
+    grid-area: player-minus-2;
+  }
+
+  .player-minus-3 {
+    grid-area: player-minus-3;
+  }
+}
+
+.draw-pile {
+  grid-area: draw-pile;
+  justify-self: end;
+  padding-right: 2px;
+  align-self: center;
+}
+
+#discard {
+  grid-area: discard-pile;
+  justify-self: start;
+  padding-left: 2px;
+  align-self: center;
+}
+
+.card {
+  background-image: url("/images/cards.png");
+  background-size: calc(2572px / $scale) calc(1397px / $scale);
+  height: #{$height}px;
+  width: #{$width}px;
+}
+
+$colors: ("red": 0, "blue": calc($height + $y-padding), "yellow": calc(($height + $y-padding) * 2), "green": calc(($height + $y-padding) * 3), "special": calc(($height + $y-padding) * 4));
+@each $color, $offset in $colors {
+  .#{$color} {
+    background-position-y: -#{$offset}px;
+  }
+}
+
+$cards: ("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "skip", "reverse", "draw-two");
+@for $i from 1 through 13 {
+  .card-#{($i - 1)} {
+    background-position-x: -#{calc(($i - 1) * ($width + $x-padding))}px;
+  }
+}

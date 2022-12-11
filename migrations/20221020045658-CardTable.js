@@ -1,13 +1,13 @@
-'use strict';
-
+"use strict";
 const cards = require("../config/cards");
-
 const {
   CARD_COLORS,
-  CARDS_WITH_COLORS_SINGLE,
-  CARDS_WITH_COLORS_MULTIPLE,
-  OTHER_CARDS } = cards;
+  NO_COLOR_CARD_TYPES,
+  DUAL_COLOR_CARD_TYPES,
+  SINGLE_COLOR_CARD_TYPES,
+} = cards;
 
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("cards", {
@@ -15,32 +15,31 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false,
       },
       type: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
       color: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING,
         allowNull: false,
       },
     });
 
-    const SINGLE_CARDS = CARDS_WITH_COLORS_SINGLE.reduce((memo, type) => {
+    const SINGLE_CARDS = SINGLE_COLOR_CARD_TYPES.reduce((memo, type) => {
       Object.values(CARD_COLORS)
         .filter((color) => color !== CARD_COLORS.NONE)
-        .forEach(color => {
+        .forEach((color) => {
           memo.push({ color, type });
         });
 
       return memo;
     }, []);
 
-    const DUAL_CARDS = CARDS_WITH_COLORS_MULTIPLE.reduce((memo, type) => {
+    const DUAL_CARDS = DUAL_COLOR_CARD_TYPES.reduce((memo, type) => {
       Object.values(CARD_COLORS)
         .filter((color) => color !== CARD_COLORS.NONE)
-        .forEach(color => {
+        .forEach((color) => {
           memo.push({ color, type });
           memo.push({ color, type });
         });
@@ -48,7 +47,7 @@ module.exports = {
       return memo;
     }, []);
 
-    const WILD_CARDS = OTHER_CARDS.reduce((memo, type) => {
+    const WILD_CARDS = NO_COLOR_CARD_TYPES.reduce((memo, type) => {
       memo.push({ color: CARD_COLORS.NONE, type });
       memo.push({ color: CARD_COLORS.NONE, type });
       memo.push({ color: CARD_COLORS.NONE, type });
@@ -66,5 +65,5 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("cards");
-  }
+  },
 };

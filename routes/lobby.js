@@ -6,9 +6,6 @@ var router = express.Router();
 router.get('/', protect, (req, res, next) => {
   const { sessionID } = req;
   const { email, user_id } = req.session;
-  
-  // res.render('lobby', { email, user_id, games });
-
   Games.all()
     .then((games) => {
       console.log({ games });
