@@ -1,7 +1,17 @@
-H2(class="text-center")="Chat Room"
-div(style="height: 500px")
-    #chat 
-    #messages 
-    #send 
-       input(type = "text" id = "message")
+//- H2(class="text-center")="Chat Room"
+//- div(style="height: 500px")
+//-     #chat 
+//-     #messages 
+//-     #send 
+//-        input(type = "text" id = "message")
 
+H2(class="text-center")="Chat Room"
+div(style="overflow:scroll;height:100px")
+    #messages
+div(class="form-floating")
+    textarea(class="form-control" placeholder="Send Your Nice Message" type="text" name="chat-message" id="message")
+    label(for="floatingTextarea2")
+        |Send Your Nice Message
+    div(class="text-end me-1 mb-1")
+        button(type="button" class="btn btn-primary" id="messageSend")
+            |Send

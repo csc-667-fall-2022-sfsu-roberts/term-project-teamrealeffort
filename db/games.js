@@ -1,9 +1,12 @@
 const db = require("./index");
 
-const CREATE_SQL = "INSERT INTO games (title) VALUES (${title}) RETURNING id";
+const CREATE_SQL = "INSERT INTO games (title) VALUES(${title}) RETURNING id";
+const ADD_USER_SQL = "INSERT INTO game_users (user_id, game_id) VALUES(${user_id}, ${game_id}) RETURNING game_id";
+const CHECK_USER_IN_GAME_SQL = "SELECT * FROM game_users WHERE user_id =${user_id}";
+const LIST_SQL = "select * from games"
 
-const CHECK_USER_IN_GAME_SQL =
-  "SELECT * FROM game_users WHERE user_id=${user_id} AND game_id = ${game_id}";
+const create = (user_id, title) => {
+  console.log("Title: " + title);
 
 const ADD_USER_SQL =
   "INSERT INTO game_users (game_id, user_id) VALUES (${game_id}, ${user_id}) RETURNING game_id";
@@ -26,12 +29,14 @@ const GET_PLAYERS =
 
 const create = (user_id, title = "") => {
   console.log("Game created!"); 
+
   return db
     .one(CREATE_SQL, { title })
     .then(({ id: game_id }) => addUser(user_id, game_id));
-};
+}
 
 const addUser = (user_id, game_id) => {
+
   console.log("User added! " + user_id); 
   return db
     .none(CHECK_USER_IN_GAME_SQL, { user_id, game_id })
@@ -139,88 +144,17 @@ const getCurrentDiscard = (game_id) =>
     { game_id }
   );
 
-const isUserInGame = (game_id, user_id) =>
-  db
-    .one(
-      "SELECT * FROM game_users WHERE game_id=${game_id} AND user_id=${user_id}",
-      { game_id, user_id }
-    )
-    .then(() => true)
-    .catch(() => false);
+/*
+const addUser = (user_id, game_id) => {
+  return db
+    .none(CHECK_USER_IN_GAME_SQL, { user_id })
+    .then(() => db.one(ADD_USER_SQL, { user_id, game_id }));
+}
+*/
 
-const isUsersTurn = (game_id, user_id) =>
-  db
-    .one(
-      "SELECT current FROM game_users WHERE game_id=${game_id} AND user_id=${user_id}",
-      { game_id, user_id }
-    )
-    .then(({ current }) => current);
-
-const userHasCard = (game_id, user_id, card_id) =>
-  db
-    .one(
-      "SELECT * FROM game_cards WHERE game_id=${game_id} AND user_id=${user_id} AND card_id=${card_id}",
-      { game_id, user_id, card_id }
-    )
-    .then(() => true)
-    .catch(() => false);
-
-const getCard = (card_id) =>
-  db.one("SELECT * FROM cards WHERE id=${card_id}", { card_id });
-
-const setNextPlayer = (game_id, user_id) =>
-  db
-    .one(
-      "SELECT seat FROM game_users WHERE game_id=${game_id} AND user_id=${user_id}",
-      { game_id, user_id }
-    )
-    .then(({ seat }) =>
-      Promise.all([
-        db.none(
-          "UPDATE game_users SET current=false WHERE game_id=${game_id} AND user_id=${user_id}",
-          { game_id, user_id }
-        ),
-        db.none(
-          "UPDATE game_users SET current=true WHERE game_id=${game_id} AND seat=${seat}",
-          { game_id, seat: (seat + 1) % 2 } // TODO: that 2 should come from number of players in game
-        ),
-      ])
-    );
-
-const drawCard = (game_id, user_id) =>
-  db
-    .one(
-      "SELECT COUNT(*)::int FROM game_cards WHERE game_id=${game_id} AND user_id=0",
-      { game_id }
-    )
-    .then(({ count }) => {
-      if (count <= 1) {
-        // TODO shuffle discarded
-      } else {
-        return Promise.resolve();
-      }
-    })
-    .then(() => getNextDrawableCards(game_id, 1))
-    .then(([{ card_id }]) => assignCard({ game_id, user_id, card_id }));
-
-module.exports = {
-  create,
-  all,
-  addUser,
-  userCount,
-  info,
-  getPlayers,
-  initDeck,
-  getNextDrawableCards,
-  assignCard,
-  setPlayerSeat,
-  getPlayerHand,
-  getCurrentDiscard,
-  isUserInGame,
-  isUsersTurn,
-  userHasCard,
-  getCard,
-  playerDiscard,
-  setNextPlayer,
-  drawCard,
+const all = () => {
+  return db.any(LIST_SQL).then((games) => {
+    return games;
+  }).catch((e)=>{console.log(e)});
 };
+module.exports = { create, addUser, all };

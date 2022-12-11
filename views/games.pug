@@ -1,17 +1,33 @@
 extends layout
 
-block styles
+block extra_script
   link(rel="stylesheet", href="/stylesheets/games.css")
-
 block content
-  h1 Game page #{id} (#{title})
-
-  p#waiting(class=`${ready ? "hidden" : ""}`) Waiting on users (#[span.current-count #{count}] of #[span.required-count #{required_count}])
-
-  #game-table(class=`${ready ? "" : "hidden"}`)
-    .draw-pile
-      .card.special
-    #discard
-
-block footer
-  script(src="/javascript/join.js")
+  div(class="container-fluid vh-100")
+    div(class="row justify-content-center align-items-center")
+      div(class="text-center user-name")
+        p()
+          |User1
+        img(src="/images/avatar.jpg", style="width:5%" alt="avatar")
+      
+    div(class="games-user ms-0 me-0 row justify-content-center align-items-center")
+      div(class="text-center user-name")
+        p()
+          |User4
+        img(src="/images/avatar.jpg", style="width:5%" alt="avatar")
+    div(class="d-flex justify-content-center align-items-center" style="height:50%")
+      div()
+        p(class="text-start user-name")
+          |User3
+        img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
+      div(class="text-end user-name")
+        p()
+          |User2
+        img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
+    div(class="chat-session")
+      include chat.pug
+  script(src = "/socket.io/socket.io.js")
+  script(src = "/javascript/setup.js")
+  script(src = "/javascript/chat.js")
+  
+    

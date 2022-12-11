@@ -1,6 +1,7 @@
-const express = require("express");
-
+const express = require('express');
+const protect = require('../config/protect');
 const router = express.Router();
+
 const Games = require("../db/games");
 const GameLogic = require("../game-logic");
 const CARDS = require("../config/cards");
@@ -45,8 +46,13 @@ router.post("/:id/status", (request, response) => {
 
   GameLogic.status(game_id, request.app.io);
 
-  response.status(200).send();
+
+router.get("/:id", (req, res) => {
+  console.log(req.params);
+  const { id } = req.params;
+  res.render("games", { id });
 });
+
 
 router.get("/:id", (request, response) => {
   const { id } = request.params;
@@ -165,6 +171,7 @@ router.post("/:id/play", (request, response) => {
       console.log({ error });
       response.status(200).send();
     });
+
 });
 
 module.exports = router;
