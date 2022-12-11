@@ -39,7 +39,7 @@ const addUser = (user_id, game_id) => {
 };
 
 const isGameOver = (user_id, game_id) =>
-  db.one(
+  db.any(
     "SELECT * FROM game_cards WHERE game_id=${game_id} AND user_id=${user_id}",
     { game_id, user_id }
   )
