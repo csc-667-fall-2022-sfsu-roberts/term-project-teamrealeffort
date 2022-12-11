@@ -4,24 +4,25 @@ block extra_script
   link(rel="stylesheet", href="/stylesheets/games.css")
 block content
   div(class="container-fluid vh-100")
-    div(class="row")
-      div(class="col")
+    div(class="row justify-content-center align-items-center")
+      div(class="text-center")
         p()
           |User1
+        img(src="/images/avatar.jpg", style="width:5%" alt="avatar")
+      
+    div(class="games-user ms-0 me-0 row justify-content-center align-items-center")
+      div(class="text-center")
+        p()
+          |User4
+        img(src="/images/avatar.jpg", style="width:5%" alt="avatar")
+    div(class="d-flex justify-content-center align-items-center" style="height:50%")
+      div()
+        p()
+          |User3
         img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
-
-      div(class="col")
+      div(class="text-end")
         p()
           |User2
         img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
-    div(class="games-user")
-      div(class="row ms-0 me-0")
-        div(class="col")
-          p()
-            |User3
-          img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
-        div(class="col")
-          p()
-            |User4
-          img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
+        
     
