@@ -1,13 +1,21 @@
 #games-list
 H2(class="text-center")="Games List"
-div(style= "height: 200px")
-    ul
-      each game in games
-        li 
-          span= game.title
-          form(action=`/games/${game.id}/join` method="post" target="_blank")
-            button Join Game
-            
+div(class="container-fluid")
+  div(class="row" style="margin-left:3em;margin-right:3em")
+    h3 Joinable Games
+    each game in games.joinable
+      div(class="col game-room col-md-6")
+        span= game.title
+        form(action=`/games/${game.id}/join` method="post" target="_blank")
+          button Join Game
+  div(class="row" style="margin-left:3em;margin-right:3em")
+    h3 Active Games
+    each game in games.active
+      div(class="col game-room col-md-6")
+        span= game.title
+        form(action=`/games/${game.id}/join` method="post" target="_blank")
+          button Join Game
+
     form(action="/games/create" method="post")
       label(for="title" ) Title (optional):
       input(type = "text", name = "title")
