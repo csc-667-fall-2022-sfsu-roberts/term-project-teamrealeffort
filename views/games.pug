@@ -1,5 +1,27 @@
 extends layout
 
+block extra_script
+  link(rel="stylesheet", href="/stylesheets/games.css")
 block content
-  h1 Welcome to
-  h1 Game #: #{id}
+  div(class="container-fluid vh-100")
+    div(class="row")
+      div(class="col")
+        p()
+          |User1
+        img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
+
+      div(class="col")
+        p()
+          |User2
+        img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
+    div(class="games-user")
+      div(class="row ms-0 me-0")
+        div(class="col")
+          p()
+            |User3
+          img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
+        div(class="col")
+          p()
+            |User4
+          img(src="/images/avatar.jpg", style="width:10%" alt="avatar")
+    
