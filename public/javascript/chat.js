@@ -1,5 +1,3 @@
-var chat_sockets = io("/chat", { transports: ["websocket"] });
-
 function expandTextarea(id) {
   document.getElementById(id).addEventListener('keyup', function () {
     this.style.overflow = 'hidden';
@@ -41,7 +39,7 @@ function fetchMessage() {
   });
 
   const messages = document.querySelector("#messages");
-  chat_sockets.on("chat:0", ({ sender, message, timestamp }) => {
+  socket.on("chat:0", ({ sender, message, timestamp }) => {
 
     const template = document.querySelector("message");
     console.log({ sender, message, timestamp });
