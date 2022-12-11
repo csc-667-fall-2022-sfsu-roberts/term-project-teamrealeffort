@@ -205,10 +205,10 @@ const drawCard = (game_id, user_id) =>
     )
     .then(({ count }) => {
       if (count <= 1) {
-        db.none(
-          "UPDATE game_cards SET user_id = 0 WHERE game_id=${game_id} AND user_id = -2",
-          { game_id }
-        )
+        // db.none(
+        //   "UPDATE game_cards SET user_id = 0 WHERE game_id=${game_id} AND user_id = -2",
+        //   { game_id }
+        // )
       } else {
         return Promise.resolve();
       }
