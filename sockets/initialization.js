@@ -22,7 +22,6 @@ const init = (httpServer, app) => {
     socket.join(user_id);
     console.log({ message: "connection happened", session: socket.request.session });
     console.log({ message: "User ID:  ", user_id });
-
   })
 
   app.io = io;
