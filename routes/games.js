@@ -36,7 +36,6 @@ router.post("/:id/draw", (request, response) => {
   console.log("Player " + user_id + " is drawing a card.");
 
   Games.drawCard(game_id, user_id)
-    .then(() => Games.setNextPlayer(game_id, user_id))
     .then(() => GameLogic.status(game_id, request.app.io));
 });
 
@@ -47,6 +46,37 @@ router.post("/:id/status", (request, response) => {
 
   response.status(200).send();
 });
+
+router.post("/:id/skipTurn", (request, response) => {
+  const { user_id } = request.session;
+  const { id: game_id } = request.params;
+
+  console.log("Skipping turn...")
+  Games.isUserInGame(game_id, user_id)
+    .then((isUserInGame) => {
+      if (isUserInGame) {
+        return Promise.resolve();
+      } else {
+        return Promise.reject(`${user_id} not in game`);
+      }
+    })
+
+    .then(() => Games.isUsersTurn(game_id, user_id))
+    .then((isUsersTurn) => {
+      if (isUsersTurn) {
+        return Promise.resolve();
+      } else {
+        return Promise.reject(`not ${user_id}'s turn`);
+      }
+    })
+
+    .then(() => Games.setNextPlayer(game_id, user_id))
+    .then(() => GameLogic.status(game_id, request.app.io))
+    .catch((error) => {
+      console.log({ error });
+      response.status(200).send();
+    });
+})
 
 router.get("/:id", (request, response) => {
   const { id } = request.params;
