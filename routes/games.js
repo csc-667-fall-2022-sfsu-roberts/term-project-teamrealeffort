@@ -145,12 +145,12 @@ router.post("/:id/play", (request, response) => {
       console.log("CARD COLOR: " + card.color);
       console.log("DISCARD COLOR: " + discard.color);
       console.log("DISCARD TYPE: " + discard.type);
-
       if (
         CARDS.NO_COLOR_CARD_TYPES.includes(card.type) ||
         card.color === discard.color ||
         card.type === discard.type ||
-        discard.color === "none"
+        discard.color === "none" ||
+        card.color === "none"
       ) {
         return Promise.resolve({ card, discard });
       } else {
@@ -176,22 +176,23 @@ router.post("/:id/play", (request, response) => {
       Promise.all([Games.getCard(card_id), Games.getCurrentDiscard(game_id)])
     )
     .then(([card, discard]) => {
-      console.log("Type: " + card.type);
-      if (card.type === 10) {
+      console.log("\nType: " + card.type);
+      console.log(" new discard: " + discard.type);
+      if (discard.type === 10) {
         GameLogic.status(game_id, request.app.io);
-        Game.drawCard(game_id, user_id);
-        Game.drawCard(game_id, user_id);
-        Game.setNextPlayer(game_id, user_id);
-      } else if (card.type === 11) {
+        Games.drawCard(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        Games.setNextPlayer(game_id, user_id);
+      } else if (discard.type === 11) {
         GameLogic.status(game_id, request.app.io);
-        Game.drawCard(game_id, user_id);
-        Game.drawCard(game_id, user_id);
-        Game.drawCard(game_id, user_id);
-        Game.drawCard(game_id, user_id);
-        Game.setNextPlayer(game_id, user_id);
-      } else if (card.type === 14) {
+        Games.drawCard(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        Games.setNextPlayer(game_id, user_id);
+      } else if (discard.type === 14) {
         GameLogic.status(game_id, request.app.io);
-        Game.setNextPlayer(game_id, user_id);
+        Games.setNextPlayer(game_id, user_id);
       }
       return Promise.resolve({ card, discard });
     })
