@@ -1,7 +1,7 @@
 #game-table {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
     grid-template-areas: ". player-minus-2 player-minus-2 . chat" "player-minus-1 draw-pile discard-pile player-minus-3 chat" ". player-current player-current . chat";
   }
@@ -186,7 +186,6 @@
 }
 
 .chat-session {
-    width:20%;
     background:white;
     border: 1px solid white;
     border-radius: 10px;

@@ -4,7 +4,7 @@ const router = express.Router();
 const Games = require("../db/games");
 const GameLogic = require("../game-logic");
 const CARDS = require("../config/cards");
-
+const PLAYERS = 2
 router.post("/create", (request, response) => {
   const { user_id } = request.session;
   const { title = "" } = request.body;
@@ -53,12 +53,20 @@ router.get("/:id", (request, response) => {
 
   Promise.all([Games.userCount(id), Games.info(id)])
     .then(([{ count }, { title }]) => {
+      console.log("PLAYERS:"+PLAYERS)
+      console.log("CURRENT PLAYER:"+count)
+      console.log(parseInt(count) < PLAYERS)
+      if (parseInt(count) > PLAYERS) {
+        console.log("There should be a error")
+        throw "room already full"
+      }
+
       response.render("games", {
         id,
         title,
         count,
-        required_count: 2,
-        ready: parseInt(count) === 2,
+        required_count: PLAYERS,
+        ready: parseInt(count) === PLAYERS,
       });
     })
     .catch((error) => {
@@ -75,27 +83,34 @@ router.get("/:id/:message", (request, response) => {
 router.post("/:id/join", (request, response) => {
   const { user_id } = request.session;
   const { id } = request.params;
+  Games.isUserInGame(id, user_id)
+    .then((isUserInGame) => {
+      if (isUserInGame) {
+        response.redirect(`/games/${id}`);
+      } else {
+        Games.addUser(user_id, id)
+          .then(() => Games.userCount(id))
+          .then(({ count }) => {
+            request.app.io.emit(`game:${id}:player-joined`, {
+              count: parseInt(count),
+              required_count: PLAYERS,
+            });
 
-  Games.addUser(user_id, id)
-    .then(() => Games.userCount(id))
-    .then(({ count }) => {
-      request.app.io.emit(`game:${id}:player-joined`, {
-        count: parseInt(count),
-        required_count: 2,
-      });
+            if (parseInt(count) === PLAYERS) {
+              GameLogic.initialize(id).then(() =>
+                GameLogic.status(id, request.app.io)
+              );
+            }
 
-      if (parseInt(count) === 2) {
-        GameLogic.initialize(id).then(() =>
-          GameLogic.status(id, request.app.io)
-        );
+            response.redirect(`/games/${id}`);
+          })
+          .catch((error) => {
+            console.log("JOIN ERROR!");
+            console.log({ error });
+          });
       }
-
-      response.redirect(`/games/${id}`);
     })
-    .catch((error) => {
-      console.log("JOIN ERROR!");
-      console.log({ error });
-    });
+
 });
 
 router.post("/:id/play", (request, response) => {

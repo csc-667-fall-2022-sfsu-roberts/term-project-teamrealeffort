@@ -13,7 +13,7 @@ $x-padding: calc((201 - 170) / $scale);
   grid-template-rows: auto;
   grid-template-areas:
     ". player-minus-2 player-minus-2 . chat"
-    "player-minus-1 draw-pile discard-pile player-minus-3 chat"
+    "player-minus-1 draw-pile discard-pile player-minus-3 player-minus-4 chat"
     ". player-current player-current . chat";
 
   &.hidden {

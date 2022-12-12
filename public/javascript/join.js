@@ -32,7 +32,8 @@ const getPlayerDiv = (seat, username, avatar, playerSeat, totalPlayers) => {
     container.appendChild(playerName);
 
     const userAvatar = document.createElement("img");
-    userAvatar.setAttribute("src", `//gravatar.com/avatar/${avatar}?s=50`);
+    userAvatar.setAttribute("src", `/images/avatar.png`);
+    userAvatar.setAttribute("style", `width:20%`);
     userAvatar.setAttribute("alt", username);
     userAvatar.setAttribute("title", username);
     playerName.appendChild(userAvatar);
