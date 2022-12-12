@@ -216,6 +216,7 @@ const drawCard = (game_id, user_id) =>
     .then(() => getNextDrawableCards(game_id, 1))
     .then(([{ card_id }]) => assignCard({ game_id, user_id, card_id }));
 
+
 module.exports = {
   create,
   all,

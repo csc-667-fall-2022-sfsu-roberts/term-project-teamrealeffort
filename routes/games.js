@@ -69,7 +69,6 @@ router.get("/:id", (request, response) => {
 
 router.get("/:id/:message", (request, response) => {
   const { id, message } = request.params;
-
   response.render("games", { id, message });
 });
 
@@ -103,7 +102,8 @@ router.post("/:id/play", (request, response) => {
   const { user_id } = request.session;
   const { id: game_id } = request.params;
   const { card_id } = request.body;
-
+  var { plainCard } = "";
+  var { newlyDiscard } = "";
   console.log("Checking if " + user_id + " is in game...")
   // Check that the user is in the game
   // If not, ignore
@@ -125,6 +125,7 @@ router.post("/:id/play", (request, response) => {
         return Promise.reject(`not ${user_id}'s turn`);
       }
     })
+
     // Check the card that is being played is held by the user
     // If not, ignore
     .then(() => Games.userHasCard(game_id, user_id, card_id))
@@ -141,10 +142,17 @@ router.post("/:id/play", (request, response) => {
       Promise.all([Games.getCard(card_id), Games.getCurrentDiscard(game_id)])
     )
     .then(([card, discard]) => {
+      plainCard = card;
+      console.log("CARD TYPE: " + card.type);
+      console.log("CARD COLOR: " + card.color);
+      console.log("DISCARD COLOR: " + discard.color);
+      console.log("DISCARD TYPE: " + discard.type);
       if (
         CARDS.NO_COLOR_CARD_TYPES.includes(card.type) ||
         card.color === discard.color ||
-        card.type === discard.type 
+        card.type === discard.type ||
+        discard.color === "none" ||
+        card.color === "none"
       ) {
         return Promise.resolve({ card, discard });
       } else {
@@ -155,9 +163,7 @@ router.post("/:id/play", (request, response) => {
     // Remove the card from user's hand
     // Add card to discard pile
     .then(({ card, discard }) =>
-      Games.playerDiscard(game_id, card.id, discard.id)
-    )
-    // TODO: Check for game state, needs testing
+      Games.playerDiscard(game_id, card.id, discard.id))
     .then(() => Games.isGameOver(game_id, user_id))
     .then((isGameOver) => {
       if (isGameOver) {
@@ -165,9 +171,26 @@ router.post("/:id/play", (request, response) => {
         return Promise.resolve(`Player ${user_id} has won!`);
       }
     })
-    // Change current user
+    .then(() => {
+      console.log("\nType: " + plainCard.type);
+      if (plainCard.type === 10) {
+        Games.setNextPlayer(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        GameLogic.status(game_id, request.app.io);
+      } else if (plainCard.type === 11) {
+        Games.setNextPlayer(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        Games.drawCard(game_id, user_id);
+        GameLogic.status(game_id, request.app.io);
+      } else if (plainCard.type === 14) {
+        Games.setNextPlayer(game_id, user_id);
+        GameLogic.status(game_id, request.app.io);
+      }
+    })
     .then(() => Games.setNextPlayer(game_id, user_id))
-    // Broadcast game state
     .then(() => GameLogic.status(game_id, request.app.io))
     .catch((error) => {
       console.log({ error });
