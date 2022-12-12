@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const {id, email, password } = req.body;
+  const { id, email, password } = req.body;
 
   verifyLogin.check({ id, email, password })
     .then(({ id }) => {

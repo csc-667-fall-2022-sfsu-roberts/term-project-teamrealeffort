@@ -176,9 +176,7 @@ fetch(window.location.pathname, { method: "post" })
     fetch(`${window.location.pathname}/status`, { method: "post" });
   });
 
-
-document.getElementById("passturn").addEventListener("click",()=>{
+document.getElementById("passturn").addEventListener("click", () => {
   const gameId = window.location.pathname.split("/")[2]
-  fetch(`/games/${gameId}/skipTurn`,{ method: "post" })
+  fetch(`/games/${gameId}/skipTurn`, { method: "post" })
 })
-  // TODO: Game Win 

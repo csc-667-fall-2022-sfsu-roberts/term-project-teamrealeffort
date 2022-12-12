@@ -83,8 +83,8 @@ router.get("/:id", (request, response) => {
 
   Promise.all([Games.userCount(id), Games.info(id)])
     .then(([{ count }, { title }]) => {
-      console.log("PLAYERS:"+PLAYERS)
-      console.log("CURRENT PLAYER:"+count)
+      console.log("PLAYERS:" + PLAYERS)
+      console.log("CURRENT PLAYER:" + count)
       console.log(parseInt(count) < PLAYERS)
       if (parseInt(count) > PLAYERS) {
         console.log("There should be a error")
@@ -148,7 +148,6 @@ router.post("/:id/play", (request, response) => {
   const { id: game_id } = request.params;
   const { card_id } = request.body;
   var { plainCard } = "";
-  var { newlyDiscard } = "";
   console.log("Checking if " + user_id + " is in game...")
   // Check that the user is in the game
   // If not, ignore
@@ -188,10 +187,11 @@ router.post("/:id/play", (request, response) => {
     )
     .then(([card, discard]) => {
       plainCard = card;
-      console.log("CARD TYPE: " + card.type);
-      console.log("CARD COLOR: " + card.color);
-      console.log("DISCARD COLOR: " + discard.color);
-      console.log("DISCARD TYPE: " + discard.type);
+      // DEBUG: Card and Discard Values 
+      // console.log("CARD TYPE: " + card.type);
+      // console.log("CARD COLOR: " + card.color);
+      // console.log("DISCARD COLOR: " + discard.color);
+      // console.log("DISCARD TYPE: " + discard.type);
       if (
         CARDS.NO_COLOR_CARD_TYPES.includes(card.type) ||
         card.color === discard.color ||

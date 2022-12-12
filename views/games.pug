@@ -1,7 +1,7 @@
 extends layout
 
 block styles
-  link(rel="stylesheet", href="/stylesheets/games.css")
+  link(rel="stylesheet" href="/stylesheets/games.css")
 
 block content
   h1(style="background:white") Game page #{id} (#{title})
@@ -15,13 +15,13 @@ block content
       .card.special
     #discard
     form(action=`/games/${id}/skipTurn` onsubmit="return false;" method="post" style="position:absolute;bottom:0%;left:40%")
-        button(id="passturn") PassTurn
-  
+      button(id="passturn") PassTurn
+
   script(src = "/socket.io/socket.io.js")
   script(src = "/javascript/setup.js")
   script(src = "/javascript/chat.js")
-  
-    
+
+
 
 block footer
   script(src="/javascript/join.js")

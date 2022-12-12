@@ -177,7 +177,6 @@ const userHasCard = (game_id, user_id, card_id) =>
 const getCard = (card_id) =>
   db.one("SELECT * FROM cards WHERE id=${card_id}", { card_id });
 
-// TODO: This should take one more parameter, which would ultimately be the playercount?
 const setNextPlayer = (game_id, user_id) =>
   db
     .one(
@@ -192,7 +191,7 @@ const setNextPlayer = (game_id, user_id) =>
         ),
         db.none(
           "UPDATE game_users SET current=true WHERE game_id=${game_id} AND seat=${seat}",
-          { game_id, seat: (seat + 1) % 2 } // TODO: that 2 should come from number of players in game
+          { game_id, seat: (seat + 1) % 2 }
         ),
       ])
     );
@@ -205,10 +204,10 @@ const drawCard = (game_id, user_id) =>
     )
     .then(({ count }) => {
       if (count <= 1) {
-        // db.none(
-        //   "UPDATE game_cards SET user_id = 0 WHERE game_id=${game_id} AND user_id = -2",
-        //   { game_id }
-        // )
+        db.none(
+          "UPDATE game_cards SET user_id = 0 WHERE game_id=${game_id} AND user_id = -2",
+          { game_id }
+        )
       } else {
         return Promise.resolve();
       }

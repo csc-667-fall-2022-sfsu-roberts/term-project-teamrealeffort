@@ -8,18 +8,18 @@ function expandTextarea(id) {
 
 
 function sendMessage(message) {
-  
-    fetch("/chat/0", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: message }),
-    })
-      .then(() => {
-        document.querySelector("#message").value = "";
-      })
-      .catch((error) => console.log(error));
 
-  }
+  fetch("/chat/0", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: message }),
+  })
+    .then(() => {
+      document.querySelector("#message").value = "";
+    })
+    .catch((error) => console.log(error));
+
+}
 
 
 function fetchMessage() {
@@ -30,12 +30,12 @@ function fetchMessage() {
     if (event.keyCode === 13) {
       sendMessage(message)
     }
-    
+
   });
   document.querySelector("#messageSend").addEventListener("click", (event) => {
     console.log(event);
     sendMessage(message)
-    
+
   });
 
   const messages = document.querySelector("#messages");

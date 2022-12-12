@@ -10,14 +10,14 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   const { username, password, email } = req.body;
-  
+
   Users.register({ username, password, email })
     .then(({ id, username }) => {
-      
+
       req.session.user_id = id;
       req.session.username = username;
       req.session.authenticated = true;
-      console.log({ username, password, email , id});
+      console.log({ username, password, email, id });
 
       res.redirect('/login');
     })
