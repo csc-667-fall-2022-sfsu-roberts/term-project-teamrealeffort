@@ -141,11 +141,37 @@ router.post("/:id/play", (request, response) => {
       Promise.all([Games.getCard(card_id), Games.getCurrentDiscard(game_id)])
     )
     .then(([card, discard]) => {
+      console.log("CARD TYPE: " + card.type);
+      console.log("CARD COLOR: " + card.color);
+      console.log("DISCARD COLOR: " + discard.color);
+      console.log("DISCARD TYPE: " + discard.type);
+
       if (
         CARDS.NO_COLOR_CARD_TYPES.includes(card.type) ||
         card.color === discard.color ||
-        card.type === discard.type 
+        card.type === discard.type
       ) {
+        console.log("CARD type: " + card.type);
+        if (card.type === 10) {
+          console.log("DRAW TWO CARDS");
+          Games.setNextPlayer(game_id, user_id)
+            .then(() => Games.drawCard(game_id, user_id))
+            .then(() => GameLogic.status(game_id, request.app.io));
+        } else if (card.type === 11) {
+          console.log("DRAW FOUR CARDS");
+          Games.setNextPlayer(game_id, user_id)
+            .then(() => GameLogic.status(game_id, request.app.io));
+        } else if (card.type === 13) {
+          console.log("THE ORDER HAS REVERSED");
+        } else if (card.type === 14) {
+          Games.setNextPlayer(game_id, user_id)
+            .then(() => GameLogic.status(game_id, request.app.io));
+            console.log("NEXT PLAYER IS SKIPPED");
+        }
+        if (card.type === 11 || card.type === 12) {
+          console.log("TIME TO CHOOSE A COLOR");
+          Games.chooseColor();
+        }
         return Promise.resolve({ card, discard });
       } else {
         return Promise.reject(`${card.id} can not be played on ${discard.id}`);
