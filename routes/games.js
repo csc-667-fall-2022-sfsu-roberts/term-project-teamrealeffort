@@ -125,6 +125,7 @@ router.post("/:id/play", (request, response) => {
         return Promise.reject(`not ${user_id}'s turn`);
       }
     })
+
     // Check the card that is being played is held by the user
     // If not, ignore
     .then(() => Games.userHasCard(game_id, user_id, card_id))
@@ -170,7 +171,6 @@ router.post("/:id/play", (request, response) => {
         }
         if (card.type === 11 || card.type === 12) {
           console.log("TIME TO CHOOSE A COLOR");
-          Games.chooseColor();
         }
         return Promise.resolve({ card, discard });
       } else {
