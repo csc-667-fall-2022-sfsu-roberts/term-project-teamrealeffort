@@ -1,8 +1,3 @@
-// 10: Draw Two
-// 11: Draw Four
-// 12: Wild
-// 13: Reverse
-// 14: Skip
 const DRAW_TWO = 10;
 const DRAW_FOUR = 11;
 const WILD = 12;
