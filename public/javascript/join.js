@@ -21,6 +21,7 @@ const getPlayerDiv = (seat, username, avatar, playerSeat, totalPlayers) => {
 
     if (playerSeat === seat) {
       container.classList.add("player-current");
+
     } else {
       container.classList.add(
         `player-minus-${(playerSeat + seat) % totalPlayers}`
@@ -67,6 +68,7 @@ const getPlayerCardDiv = (
 
   if (current) {
     container.classList.add("player-taking-turn");
+
   } else if (container.classList.contains("player-taking-turn")) {
     container.classList.remove("player-taking-turn");
   }
