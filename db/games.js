@@ -188,7 +188,7 @@ const setNextPlayer = (game_id, user_id) =>
         ),
         db.none(
           "UPDATE game_users SET current=true WHERE game_id=${game_id} AND seat=${seat}",
-          { game_id, seat: (seat + 1) % 2 }
+          { game_id, seat: (seat + 1) % 4 }
         ),
       ])
     );
