@@ -4,7 +4,7 @@ const router = express.Router();
 const Games = require("../db/games");
 const GameLogic = require("../game-logic");
 const CARDS = require("../config/cards");
-const PLAYERS = 2
+const PLAYERS = 4
 router.post("/create", (request, response) => {
   const { user_id } = request.session;
   const { title = "" } = request.body;
